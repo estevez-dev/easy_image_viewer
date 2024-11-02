@@ -84,42 +84,44 @@ class _EasyImageViewerDismissibleDialogState
           return true;
         },
         key: _popScopeKey,
-        child: Dialog(
-            backgroundColor: widget.backgroundColor,
-            insetPadding: const EdgeInsets.all(0),
-            // We set the shape here to ensure no rounded corners allow any of the
-            // underlying view to show. We want the whole background to be covered.
-            shape:
-                const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-            child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: <Widget>[
-                  EasyImageViewPager(
-                      easyImageProvider: widget.imageProvider,
-                      pageController: _pageController,
-                      doubleTapZoomable: widget.doubleTapZoomable,
-                      infinitelyScrollable: widget.infinitelyScrollable,
-                      onScaleChanged: (scale) {
-                        setState(() {
-                          _dismissDirection = scale <= 1.0
-                              ? DismissDirection.down
-                              : DismissDirection.none;
-                        });
-                      }),
-                  Positioned(
-                      top: 5,
-                      right: 5,
-                      child: IconButton(
-                        icon: const Icon(Icons.close),
-                        color: widget.closeButtonColor,
-                        tooltip: widget.closeButtonTooltip,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          _handleDismissal();
-                        },
-                      ))
-                ])));
+        child: ExcludeSemantics(
+          child: Dialog(
+              backgroundColor: widget.backgroundColor,
+              insetPadding: const EdgeInsets.all(0),
+              // We set the shape here to ensure no rounded corners allow any of the
+              // underlying view to show. We want the whole background to be covered.
+              shape:
+                  const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+              child: Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    EasyImageViewPager(
+                        easyImageProvider: widget.imageProvider,
+                        pageController: _pageController,
+                        doubleTapZoomable: widget.doubleTapZoomable,
+                        infinitelyScrollable: widget.infinitelyScrollable,
+                        onScaleChanged: (scale) {
+                          setState(() {
+                            _dismissDirection = scale <= 1.0
+                                ? DismissDirection.down
+                                : DismissDirection.none;
+                          });
+                        }),
+                    Positioned(
+                        top: 5,
+                        right: 5,
+                        child: IconButton(
+                          icon: const Icon(Icons.close),
+                          color: widget.closeButtonColor,
+                          tooltip: widget.closeButtonTooltip,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            _handleDismissal();
+                          },
+                        ))
+                  ])),
+        ));
 
     if (widget.swipeDismissible) {
       return Dismissible(
